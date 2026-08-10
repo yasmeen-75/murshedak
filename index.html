@@ -54,7 +54,6 @@
             overflow-x: hidden;
         }
 
-        /* Full Screen Cinematic Hero Header */
         .hero-section {
             position: relative;
             width: 100%;
@@ -77,7 +76,7 @@
             transform: translate(-50%, -50%);
             object-fit: cover;
             z-index: 1;
-            filter: brightness(0.7);
+            filter: brightness(0.65);
         }
 
         .hero-overlay {
@@ -193,7 +192,6 @@
             60% { transform: translateY(-5px); }
         }
 
-        /* Auth Card Section */
         .auth-wrapper {
             position: relative;
             z-index: 20;
@@ -288,7 +286,6 @@
             font-size: 0.95rem;
         }
 
-        /* Main Workspace Interface */
         .main-container {
             display: none;
             max-width: 1140px;
@@ -343,7 +340,6 @@
             cursor: pointer;
         }
 
-        /* Features Gallery Grid */
         .section-header {
             text-align: center;
             margin-bottom: 35px;
@@ -419,7 +415,6 @@
             color: var(--text-body);
         }
 
-        /* Interactive Workspace with Background Image Overlay */
         .tool-canvas {
             position: relative;
             background-size: cover;
@@ -533,7 +528,6 @@
 </head>
 <body data-theme="light" dir="rtl">
 
-    <!-- Full Screen Video Landing Page -->
     <section class="hero-section">
         <video class="hero-video" autoplay loop muted playsinline poster="https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?q=80&w=1200">
             <source src="https://assets.mixkit.co/videos/preview/mixkit-desert-dunes-under-a-clear-blue-sky-42931-large.mp4" type="video/mp4">
@@ -562,7 +556,6 @@
         </div>
     </section>
 
-    <!-- Auth / Guest Session Wrapper -->
     <div class="auth-wrapper" id="auth-box">
         <div class="auth-card">
             <div class="auth-nav">
@@ -584,10 +577,8 @@
         </div>
     </div>
 
-    <!-- Main Dynamic Application Workspace -->
     <main class="main-container" id="app-workspace">
         
-        <!-- API Key Private Banner -->
         <div class="api-banner">
             <label id="lbl-api"><i class="fa-solid fa-shield-halved" style="color:var(--accent);"></i> أدخل مفتاح Gemini API الخاص بك (محفوظ بشكل آمن وخاص بك):</label>
             <div class="api-input-wrap">
@@ -597,7 +588,6 @@
             <small id="key-status-msg" style="color:var(--accent-dark); font-weight:700;"></small>
         </div>
 
-        <!-- Features Showcase Grid -->
         <div class="section-header">
             <h2 id="txt-sec-title">اختر الخدمة الذكية</h2>
             <p id="txt-sec-desc">استمتع بالتفاعل الصوتي والبصري والمعلوماتي المبتكر</p>
@@ -607,7 +597,7 @@
             <!-- 1. Visual Recognition (Jabal Al Qarah) -->
             <div class="gallery-card" onclick="openTool('visual')">
                 <div class="card-img-holder">
-                    <img src="https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3380.jpeg" onerror="this.src='https://images.unsplash.com/photo-1590076176722-e42426e2571f?q=80&w=800'" alt="جبل القارة">
+                    <img src="https://images.unsplash.com/photo-1590076176722-e42426e2571f?q=80&w=800" alt="جبل القارة">
                 </div>
                 <div class="card-content">
                     <h3 id="g1-t"><i class="fa-solid fa-camera"></i> التحليل البصري</h3>
@@ -618,7 +608,7 @@
             <!-- 2. Location GPS Guide (Riyadh Tower) -->
             <div class="gallery-card" onclick="openTool('gps')">
                 <div class="card-img-holder">
-                    <img src="https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3382.jpeg" onerror="this.src='https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?q=80&w=800'" alt="الرياض">
+                    <img src="https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?q=80&w=800" alt="الرياض">
                 </div>
                 <div class="card-content">
                     <h3 id="g2-t"><i class="fa-solid fa-location-dot"></i> مرشد الموقع GPS</h3>
@@ -629,7 +619,7 @@
             <!-- 3. Crowd Control (Jeddah Waterfront) -->
             <div class="gallery-card" onclick="openTool('routing')">
                 <div class="card-img-holder">
-                    <img src="https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3385.jpg" onerror="this.src='https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800'" alt="كورنيش البحر">
+                    <img src="https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800" alt="كورنيش البحر">
                 </div>
                 <div class="card-content">
                     <h3 id="g3-t"><i class="fa-solid fa-route"></i> إدارة الازدحام</h3>
@@ -640,7 +630,7 @@
             <!-- 4. Culture & Cuisine (Saudi Dishes) -->
             <div class="gallery-card" onclick="openTool('cuisine')">
                 <div class="card-img-holder">
-                    <img src="https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3389.jpeg" onerror="this.src='https://images.unsplash.com/photo-1541518763669-27fef04b14e8?q=80&w=800'" alt="طعام سعودي تراثي">
+                    <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14e8?q=80&w=800" alt="طعام سعودي تراثي">
                 </div>
                 <div class="card-content">
                     <h3 id="g4-t"><i class="fa-solid fa-utensils"></i> التراث والأطباق</h3>
@@ -649,8 +639,7 @@
             </div>
         </div>
 
-        <!-- Interactive AI Tool Workspace Area with Glassmorphism Overlay -->
-        <div class="tool-canvas" id="canvas-area" style="background-image: url('https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3380.jpeg');">
+        <div class="tool-canvas" id="canvas-area" style="background-image: url('https://images.unsplash.com/photo-1590076176722-e42426e2571f?q=80&w=800');">
             <div class="tool-canvas-overlay"></div>
             <div class="tool-canvas-content">
                 <h2 id="tool-canvas-title" style="color:var(--text-title); margin-bottom:20px;"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--accent)"></i> أهلاً بك في مرشدك الذكي</h2>
@@ -678,10 +667,10 @@
 
     <script>
         const cardImages = {
-            visual: "https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3380.jpeg",
-            gps: "https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3382.jpeg",
-            routing: "https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3385.jpg",
-            cuisine: "https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3389.jpeg"
+            visual: "https://images.unsplash.com/photo-1590076176722-e42426e2571f?q=80&w=800",
+            gps: "https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?q=80&w=800",
+            routing: "https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800",
+            cuisine: "https://images.unsplash.com/photo-1541518763669-27fef04b14e8?q=80&w=800"
         };
 
         const langDict = {
@@ -715,7 +704,6 @@
         let b64Image = "";
         let speechText = "";
 
-        // Load API key from local storage on page start
         window.addEventListener('DOMContentLoaded', () => {
             const savedKey = localStorage.getItem('murshedak_api_key');
             if(savedKey) {
@@ -791,7 +779,6 @@
             const canvas = document.getElementById('canvas-area');
             document.getElementById('response-box').style.display = 'none';
 
-            // Change background image dynamically to matching photo
             if(cardImages[tool]) {
                 canvas.style.backgroundImage = `url('${cardImages[tool]}')`;
             }
