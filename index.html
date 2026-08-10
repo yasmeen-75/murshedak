@@ -6,7 +6,7 @@
     <title>مُـرْشِـدُك | Murshedak AI</title>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Cairo & Tajawal -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -77,7 +77,7 @@
             transform: translate(-50%, -50%);
             object-fit: cover;
             z-index: 1;
-            filter: brightness(0.75);
+            filter: brightness(0.7);
         }
 
         .hero-overlay {
@@ -105,7 +105,6 @@
             font-weight: 900;
             color: #FFFFFF;
             text-decoration: none;
-            letter-spacing: -0.5px;
         }
 
         .brand-logo i {
@@ -261,10 +260,6 @@
             outline: none;
         }
 
-        .form-group input:focus {
-            border-color: var(--accent);
-        }
-
         .btn-action {
             width: 100%;
             padding: 14px;
@@ -301,7 +296,6 @@
             padding: 0 25px;
         }
 
-        /* API Key Control Banner */
         .api-banner {
             background: var(--bg-surface);
             border-radius: var(--radius-md);
@@ -362,11 +356,6 @@
             margin-bottom: 8px;
         }
 
-        .section-header p {
-            color: var(--text-body);
-            font-size: 1.05rem;
-        }
-
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -393,9 +382,8 @@
 
         .card-img-holder {
             width: 100%;
-            height: 170px;
+            height: 180px;
             overflow: hidden;
-            position: relative;
         }
 
         .card-img-holder img {
@@ -431,14 +419,34 @@
             color: var(--text-body);
         }
 
-        /* Tool Processing Canvas Area */
+        /* Interactive Workspace with Background Image Overlay */
         .tool-canvas {
-            background: var(--bg-surface);
+            position: relative;
+            background-size: cover;
+            background-position: center;
             border-radius: var(--radius-lg);
             padding: 35px;
             border: 1px solid var(--border);
             box-shadow: var(--shadow-lg);
-            min-height: 250px;
+            min-height: 350px;
+            overflow: hidden;
+        }
+
+        .tool-canvas-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(253, 251, 247, 0.88);
+            backdrop-filter: blur(10px);
+            z-index: 1;
+        }
+
+        [data-theme="dark"] .tool-canvas-overlay {
+            background: rgba(18, 16, 15, 0.88);
+        }
+
+        .tool-canvas-content {
+            position: relative;
+            z-index: 2;
         }
 
         .upload-dropzone {
@@ -447,7 +455,7 @@
             height: 220px;
             border: 2px dashed var(--accent);
             border-radius: var(--radius-md);
-            background: var(--accent-light);
+            background: rgba(255, 255, 255, 0.6);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -475,20 +483,16 @@
 
         .response-card {
             margin-top: 25px;
-            background: var(--bg-card);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
             padding: 25px;
             border-radius: var(--radius-md);
             border-right: 5px solid var(--accent);
             display: none;
         }
 
-        .response-card h4 {
-            font-size: 1.2rem;
-            color: var(--text-title);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        [data-theme="dark"] .response-card {
+            background: rgba(36, 31, 28, 0.85);
         }
 
         .audio-bar {
@@ -522,7 +526,6 @@
 
         @media (max-width: 768px) {
             .hero-body h1 { font-size: 2.5rem; }
-            .hero-body p { font-size: 1.05rem; }
             .auth-wrapper { margin-top: -40px; }
             .api-input-wrap { flex-direction: column; }
         }
@@ -530,7 +533,7 @@
 </head>
 <body data-theme="light" dir="rtl">
 
-    <!-- Full Screen Video Landing Page Header -->
+    <!-- Full Screen Video Landing Page -->
     <section class="hero-section">
         <video class="hero-video" autoplay loop muted playsinline poster="https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?q=80&w=1200">
             <source src="https://assets.mixkit.co/videos/preview/mixkit-desert-dunes-under-a-clear-blue-sky-42931-large.mp4" type="video/mp4">
@@ -584,12 +587,12 @@
     <!-- Main Dynamic Application Workspace -->
     <main class="main-container" id="app-workspace">
         
-        <!-- API Key Verification Banner -->
+        <!-- API Key Private Banner -->
         <div class="api-banner">
-            <label id="lbl-api"><i class="fa-solid fa-key" style="color:var(--accent);"></i> مفتاح Google Gemini API Key الخاص بك:</label>
+            <label id="lbl-api"><i class="fa-solid fa-shield-halved" style="color:var(--accent);"></i> أدخل مفتاح Gemini API الخاص بك (محفوظ بشكل آمن وخاص بك):</label>
             <div class="api-input-wrap">
                 <input type="password" id="gemini-key-input" placeholder="ألصق المفتاح الذي يبدأ بـ AIzaSy... أو AQ..." value="">
-                <button class="btn-verify" onclick="verifyKey()"><i class="fa-solid fa-check"></i> حفظ واختبار</button>
+                <button class="btn-verify" onclick="verifyKey()"><i class="fa-solid fa-check"></i> حفظ المفتاح</button>
             </div>
             <small id="key-status-msg" style="color:var(--accent-dark); font-weight:700;"></small>
         </div>
@@ -601,19 +604,21 @@
         </div>
 
         <div class="gallery-grid">
+            <!-- 1. Visual Recognition (Jabal Al Qarah) -->
             <div class="gallery-card" onclick="openTool('visual')">
                 <div class="card-img-holder">
-                    <img src="https://images.unsplash.com/photo-1590076176722-e42426e2571f?q=80&w=800" alt="سدو وقط عسيري">
+                    <img src="https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3380.jpeg" onerror="this.src='https://images.unsplash.com/photo-1590076176722-e42426e2571f?q=80&w=800'" alt="جبل القارة">
                 </div>
                 <div class="card-content">
                     <h3 id="g1-t"><i class="fa-solid fa-camera"></i> التحليل البصري</h3>
-                    <p id="g1-d">تحليل النقوش التراثية (السدو، القط العسيري) والتحف عبر الكاميرا (Multimodal).</p>
+                    <p id="g1-d">تصوير النقوش التراثية، المعالم السياحية، والتحف للتعرف عليها وسرد قصتها باللغة التي تختارها.</p>
                 </div>
             </div>
 
+            <!-- 2. Location GPS Guide (Riyadh Tower) -->
             <div class="gallery-card" onclick="openTool('gps')">
                 <div class="card-img-holder">
-                    <img src="https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?q=80&w=800" alt="معالم جغرافية">
+                    <img src="https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3382.jpeg" onerror="this.src='https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?q=80&w=800'" alt="الرياض">
                 </div>
                 <div class="card-content">
                     <h3 id="g2-t"><i class="fa-solid fa-location-dot"></i> مرشد الموقع GPS</h3>
@@ -621,19 +626,21 @@
                 </div>
             </div>
 
+            <!-- 3. Crowd Control (Jeddah Waterfront) -->
             <div class="gallery-card" onclick="openTool('routing')">
                 <div class="card-img-holder">
-                    <img src="https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800" alt="إدارة الازدحام">
+                    <img src="https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3385.jpg" onerror="this.src='https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800'" alt="كورنيش البحر">
                 </div>
                 <div class="card-content">
                     <h3 id="g3-t"><i class="fa-solid fa-route"></i> إدارة الازدحام</h3>
-                    <p id="g3-d">توليد مسارات هادئة ووجهات بديلة في جداول منظمة (Structured JSON).</p>
+                    <p id="g3-d">توليد مسارات هادئة ووجهات بديلة في جداول منظمة.</p>
                 </div>
             </div>
 
+            <!-- 4. Culture & Cuisine (Saudi Dishes) -->
             <div class="gallery-card" onclick="openTool('cuisine')">
                 <div class="card-img-holder">
-                    <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14e8?q=80&w=800" alt="وجبات تراثية">
+                    <img src="https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3389.jpeg" onerror="this.src='https://images.unsplash.com/photo-1541518763669-27fef04b14e8?q=80&w=800'" alt="طعام سعودي تراثي">
                 </div>
                 <div class="card-content">
                     <h3 id="g4-t"><i class="fa-solid fa-utensils"></i> التراث والأطباق</h3>
@@ -642,20 +649,23 @@
             </div>
         </div>
 
-        <!-- Interactive AI Tool Workspace Area -->
-        <div class="tool-canvas" id="canvas-area">
-            <h2 id="tool-canvas-title" style="color:var(--text-title); margin-bottom:20px;"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--accent)"></i> أهلاً بك في مرشدك الذكي</h2>
-            
-            <div id="dynamic-input-area">
-                <p style="color:var(--text-body);">يرجى اختيار إحدى الخدمات السياحية المبتكرة أعلاه للبدء فوراً.</p>
-            </div>
+        <!-- Interactive AI Tool Workspace Area with Glassmorphism Overlay -->
+        <div class="tool-canvas" id="canvas-area" style="background-image: url('https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3380.jpeg');">
+            <div class="tool-canvas-overlay"></div>
+            <div class="tool-canvas-content">
+                <h2 id="tool-canvas-title" style="color:var(--text-title); margin-bottom:20px;"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--accent)"></i> أهلاً بك في مرشدك الذكي</h2>
+                
+                <div id="dynamic-input-area">
+                    <p style="color:var(--text-body); font-weight:700;">يرجى اختيار إحدى الخدمات السياحية المبتكرة أعلاه للبدء فوراً.</p>
+                </div>
 
-            <div class="response-card" id="response-box">
-                <h4 id="response-title"><i class="fa-solid fa-compass" style="color:var(--accent)"></i> إجابة الحكواتي الذكي:</h4>
-                <div id="response-text" style="margin-top:10px; color:var(--text-title);"></div>
-                <div class="audio-bar" id="audio-panel" style="display:none;">
-                    <button class="btn-speaker" onclick="playVoice()"><i class="fa-solid fa-volume-high"></i> <span id="txt-speak">استمع بصوت الحكواتي</span></button>
-                    <button class="btn-speaker" style="background:#8C7361;" onclick="stopVoice()"><i class="fa-solid fa-stop"></i> إيقاف</button>
+                <div class="response-card" id="response-box">
+                    <h4 id="response-title"><i class="fa-solid fa-compass" style="color:var(--accent)"></i> إجابة الحكواتي الذكي:</h4>
+                    <div id="response-text" style="margin-top:10px; color:var(--text-title); font-weight:600;"></div>
+                    <div class="audio-bar" id="audio-panel" style="display:none;">
+                        <button class="btn-speaker" onclick="playVoice()"><i class="fa-solid fa-volume-high"></i> <span id="txt-speak">استمع بصوت الحكواتي</span></button>
+                        <button class="btn-speaker" style="background:#8C7361;" onclick="stopVoice()"><i class="fa-solid fa-stop"></i> إيقاف</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -667,6 +677,13 @@
     </footer>
 
     <script>
+        const cardImages = {
+            visual: "https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3380.jpeg",
+            gps: "https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3382.jpeg",
+            routing: "https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3385.jpg",
+            cuisine: "https://raw.githubusercontent.com/yasmeen-75/murshedak/main/IMG_3389.jpeg"
+        };
+
         const langDict = {
             ar: {
                 logo: "مُـرْشِـدُك", langBtn: "English", badge: "رفيقك السياحي التفاعلي بالذكاء الاصطناعي",
@@ -674,9 +691,9 @@
                 login: "تسجيل الدخول", reg: "حساب جديد", email: "البريد الإلكتروني", pass: "كلمة المرور",
                 authSubmit: "دخول إلى المرشد", guest: "المتابعة كـ ضيف استكشافي",
                 secTitle: "اختر الخدمة الذكية", secDesc: "استمتع بالتفاعل الصوتي والبصري والمعلوماتي المبتكر",
-                g1T: "التحليل البصري", g1D: "تحليل النقوش التراثية (السدو، القط العسيري) والتحف عبر الكاميرا (Multimodal).",
+                g1T: "التحليل البصري", g1D: "تصوير النقوش التراثية، المعالم السياحية، والتحف للتعرف عليها وسرد قصتها باللغة التي تختارها.",
                 g2T: "مرشد الموقع GPS", g2D: "قصص حكواتي مخصصة تلقائياً بناءً على موقعك الجغرافي الحالي.",
-                g3T: "إدارة الازدحام", g3D: "توليد مسارات هادئة ووجهات بديلة في جداول منظمة (Structured JSON).",
+                g3T: "إدارة الازدحام", g3D: "توليد مسارات هادئة ووجهات بديلة في جداول منظمة.",
                 g4T: "التراث والأطباق", g4D: "استكشاف المأكولات التراثية والثقافة الثرية لكل منطقة سعودية.",
                 speak: "استمع بصوت الحكواتي", footer: "جميع الحقوق محفوظة © 2026 - تطبيق مُـرْشِـدُك AI"
             },
@@ -686,9 +703,9 @@
                 login: "Sign In", reg: "Register", email: "Email Address", pass: "Password",
                 authSubmit: "Launch Guide", guest: "Continue as Guest Explorer",
                 secTitle: "Select Smart Feature", secDesc: "Enjoy innovative audio-visual interaction and insights",
-                g1T: "Visual Analysis", g1D: "Scan heritage patterns (Sadu, Al-Qatt) and artifacts via camera (Multimodal).",
+                g1T: "Visual Recognition", g1D: "Scan heritage patterns, tourist sites, and artifacts for story analysis in your language.",
                 g2T: "GPS Location Guide", g2D: "Automatic location-aware storytelling based on your real-time coordinates.",
-                g3T: "Crowd Routing", g3D: "Generate serene itineraries and alternatives (Structured JSON).",
+                g3T: "Crowd Control", g3D: "Generate serene itineraries and alternatives in organized schedules.",
                 g4T: "Culture & Cuisine", g4D: "Discover iconic regional culinary heritage and traditional arts.",
                 speak: "Listen to Storyteller", footer: "All Rights Reserved © 2026 - Murshedak AI App"
             }
@@ -697,6 +714,16 @@
         let currentLang = 'ar';
         let b64Image = "";
         let speechText = "";
+
+        // Load API key from local storage on page start
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedKey = localStorage.getItem('murshedak_api_key');
+            if(savedKey) {
+                document.getElementById('gemini-key-input').value = savedKey;
+                document.getElementById('key-status-msg').innerText = "تم تحميل مفتاحك المحفوظ بنجاح.";
+                document.getElementById('key-status-msg').style.color = "green";
+            }
+        });
 
         function toggleTheme() {
             const b = document.body;
@@ -752,7 +779,8 @@
                 msg.innerText = "يرجى إدخال رمز المفتاح أولاً.";
                 msg.style.color = "red";
             } else {
-                msg.innerText = "تم حفظ المفتاح بنجاح! يمكنك الآن تجربة جميع الخدمات إدناه.";
+                localStorage.setItem('murshedak_api_key', key);
+                msg.innerText = "تم حفظ المفتاح آمنياً في متصفحك! جاهز للتشغيل.";
                 msg.style.color = "green";
             }
         }
@@ -760,42 +788,48 @@
         function openTool(tool) {
             const inputArea = document.getElementById('dynamic-input-area');
             const title = document.getElementById('tool-canvas-title');
+            const canvas = document.getElementById('canvas-area');
             document.getElementById('response-box').style.display = 'none';
 
+            // Change background image dynamically to matching photo
+            if(cardImages[tool]) {
+                canvas.style.backgroundImage = `url('${cardImages[tool]}')`;
+            }
+
             if(tool === 'visual') {
-                title.innerHTML = `<i class="fa-solid fa-camera" style="color:var(--accent)"></i> التحليل البصري للنقوش والتحف (Multimodal)`;
+                title.innerHTML = `<i class="fa-solid fa-camera" style="color:var(--accent)"></i> التحليل البصري للتحف والمعالم السياحية (Multimodal)`;
                 inputArea.innerHTML = `
                     <div class="upload-dropzone" onclick="document.getElementById('file-in').click()">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <span style="font-weight:700; color:var(--text-title);">اضغط هنا لرفع صورة نقش (سدو/قط عسيري) أو تحفة</span>
+                        <span style="font-weight:700; color:var(--text-title);">اضغط هنا لرفع/تصوير أي معلَم سياحي، تحفة، أو نقش (سدو/قط عسيري)</span>
                         <img id="img-preview">
                     </div>
                     <input type="file" id="file-in" accept="image/*" style="display:none;" onchange="handleImage(event)">
-                    <button class="btn-action" style="max-width:320px; margin:0 auto; display:block;" onclick="runVisualAI()">تحليل بصري عبر Gemini Vision</button>
+                    <button class="btn-action" style="max-width:320px; margin:0 auto; display:block;" onclick="runVisualAI()">تحليل وشرح المعلم بـ Gemini Vision</button>
                 `;
             } else if(tool === 'gps') {
                 title.innerHTML = `<i class="fa-solid fa-location-dot" style="color:var(--accent)"></i> مرشد الموقع الجغرافي GPS`;
                 inputArea.innerHTML = `
-                    <p style="margin-bottom:15px; font-weight:600;">اضغط الزر أدناه لسحب موقعك الجغرافي وتلقي قصص حكواتي حية عن المنطقة:</p>
+                    <p style="margin-bottom:15px; font-weight:700; color:var(--text-title);">اضغط الزر أدناه لسحب موقعك الجغرافي وتلقي قصص حكواتي مخصصة تلقائياً بناءً على موقعك الحالي:</p>
                     <button class="btn-action" style="max-width:320px; margin:0 auto; display:block;" onclick="runGPSAI()"><i class="fa-solid fa-crosshairs"></i> تحديد موقعي وسرد القصة</button>
                 `;
             } else if(tool === 'routing') {
-                title.innerHTML = `<i class="fa-solid fa-route" style="color:var(--accent)"></i> التوجيه ومراعاة الازدحام (Structured JSON)`;
+                title.innerHTML = `<i class="fa-solid fa-route" style="color:var(--accent)"></i> إدارة الازدحام وتوليد المسارات الهادئة`;
                 inputArea.innerHTML = `
                     <div class="form-group" style="max-width:480px; margin:0 auto 15px;">
-                        <label>ادخل الوجهة السياحية المقصودة:</label>
+                        <label style="font-weight:700;">ادخل الوجهة السياحية المقصودة:</label>
                         <input type="text" id="destination-in" placeholder="مثال: العلا، الدرعية، متاحف الرياض">
                     </div>
-                    <button class="btn-action" style="max-width:320px; margin:0 auto; display:block;" onclick="runRoutingAI()">توليد جدول مسار هادئ (JSON)</button>
+                    <button class="btn-action" style="max-width:320px; margin:0 auto; display:block;" onclick="runRoutingAI()">توليد مسارات هادئة ووجهات بديلة في جداول منظمة</button>
                 `;
             } else if(tool === 'cuisine') {
                 title.innerHTML = `<i class="fa-solid fa-utensils" style="color:var(--accent)"></i> دليل التراث والأطباق المحلية`;
                 inputArea.innerHTML = `
                     <div class="form-group" style="max-width:480px; margin:0 auto 15px;">
-                        <label>حدد المنطقة السعودية:</label>
+                        <label style="font-weight:700;">حدد المنطقة السعودية:</label>
                         <input type="text" id="region-in" placeholder="مثال: عسير، الأحساء، نجد، الحجاز">
                     </div>
-                    <button class="btn-action" style="max-width:320px; margin:0 auto; display:block;" onclick="runCuisineAI()">عرض التراث والمأكولات الشعبية</button>
+                    <button class="btn-action" style="max-width:320px; margin:0 auto; display:block;" onclick="runCuisineAI()">استكشاف المأكولات التراثية والثقافة الثرية لكل منطقة سعودية</button>
                 `;
             }
         }
@@ -817,9 +851,10 @@
         async function runVisualAI() {
             const key = getApiKey();
             if(!key || !b64Image) return alert("يرجى إدخال الـ API Key ورفع صورة أولاً.");
-            showWait("جاري تحليل العناصر البصرية والنقوش التراثية...");
+            showWait("جاري التعرف على الصورة، المعلم، أو النقش للتحليل...");
+            const langName = currentLang === 'ar' ? 'العربية' : 'English';
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
-            const payload = { contents: [{ parts: [{ text: "اشرح هذه الصورة التراثية أو المعلم السياحي في السعودية بأسلوب حكواتي ثري ومختصر." }, { inline_data: { mime_type: "image/jpeg", data: b64Image } }] }] };
+            const payload = { contents: [{ parts: [{ text: `التقط السائح هذه الصورة لمعلَم سياحي، تحفة متحفية، أو نقش تراثي في السعودية. التعرف عليها وشرح اسمها، قصتها التاريخية، ورمزيتها بأسلوب حكواتي مشوق باللغة (${langName}).` }, { inline_data: { mime_type: "image/jpeg", data: b64Image } }] }] };
             callGeminiAPI(url, payload);
         }
 
@@ -830,8 +865,9 @@
                 showWait("جاري سحب إحداثيات GPS الخاصة بموقعك...");
                 navigator.geolocation.getCurrentPosition(pos => {
                     const lat = pos.coords.latitude; const lng = pos.coords.longitude;
+                    const langName = currentLang === 'ar' ? 'العربية' : 'English';
                     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
-                    const payload = { contents: [{ parts: [{ text: `أنا سائح حالياً عند الإحداثيات الجغرافية (${lat}, ${lng}) في السعودية. اذكر لي اسم المنطقة القريبة ومعالمها مع سرد قصة حكواتية ممتعة.` }] }] };
+                    const payload = { contents: [{ parts: [{ text: `أنا سائح عند الإحداثيات (${lat}, ${lng}) في السعودية. اذكر اسم المنطقة القريبة ومعالمها مع سرد قصة حكواتية ممتعة باللغة (${langName}).` }] }] };
                     callGeminiAPI(url, payload);
                 }, () => alert("تعذر الوصول للموقع الجغرافي."));
             }
@@ -841,7 +877,7 @@
             const key = getApiKey();
             const dest = document.getElementById('destination-in').value || "العلا";
             if(!key) return alert("يرجى إدخال الـ API Key أولاً.");
-            showWait("جاري توليد جدول المسار المنظم وتفادي الازدحام...");
+            showWait("جاري توليد مسارات هادئة ووجهات بديلة في جداول منظمة...");
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
             const payload = {
                 contents: [{ parts: [{ text: `اقترح مسار سياحي هادئ في (${dest}). أرجع الإجابة كـ JSON بحقول: destination, best_time, crowd_status, alternative_locations.` }] }],
@@ -860,9 +896,10 @@
             const key = getApiKey();
             const reg = document.getElementById('region-in').value || "عسير";
             if(!key) return alert("يرجى إدخال الـ API Key أولاً.");
-            showWait("جاري جلب أطباق وفنون المنطقة التراثية...");
+            showWait("جاري استكشاف المأكولات التراثية والثقافة الثرية للمنطقة...");
+            const langName = currentLang === 'ar' ? 'العربية' : 'English';
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
-            const payload = { contents: [{ parts: [{ text: `ما هي أروع 3 أطباق شعبية ونقوش تراثية تتميز بها منطقة (${reg}) بالسعودية؟ أذكر وصفاً شديقاً.` }] }] };
+            const payload = { contents: [{ parts: [{ text: `ما هي أروع 3 أطباق شعبية ونقوش تراثية تتميز بها منطقة (${reg}) بالسعودية؟ أذكر وصفاً شديقاً باللغة (${langName}).` }] }] };
             callGeminiAPI(url, payload);
         }
 
