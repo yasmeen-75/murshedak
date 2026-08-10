@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مُـرْشِـدُك | Murshedak AI</title>
+    <!-- Icons & Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #FDFBF7;
+            --bg-surface: #FFFFFF;
+            --bg-card: #F5EFEB;
+            --text-primary: #2C221E;
+            --text-secondary: #6B5E55;
+            --accent-main: #C89D7C;
+            --accent-hover: #A87B5B;
+            --accent-soft: #EFE4DC;
+            --border-color: #E2D7CD;
+            --shadow: 0 10px 30px rgba(44, 34, 30, 0.05);
+            --radius: 16px;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1A1614;
+            --bg-surface: #241F1C;
+            --bg-card: #2F2925;
+            --text-primary: #F5EFEB;
+            --text-secondary: #B8ADA5;
+            --accent-main: #D4A887;
+            --accent-hover: #E2B999;
+            --accent-soft: #3D332D;
+            --border-color: #3D332D;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        body { background-color: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 5%; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow); }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.6rem; font-weight: 800; color: var(--text-primary); text-decoration: none; }
+        .logo i { color: var(--accent-main); }
+        .nav-controls { display: flex; align-items: center; gap: 12px; }
+        .icon-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+
+        .hero { position: relative; height: 50vh; min-height: 380px; display: flex; align-items: center; justify-content: center; text-align: center; color: #FFF; overflow: hidden; }
+        .hero-video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; transform: translate(-50%, -50%); object-fit: cover; z-index: 1; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(44, 34, 30, 0.4) 0%, rgba(44, 34, 30, 0.8) 100%); z-index: 2; }
+        .hero-content { position: relative; z-index: 3; max-width: 800px; padding: 0 20px; }
+        .hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 10px; }
+
+        .auth-container { max-width: 420px; margin: -50px auto 40px; background: var(--bg-surface); padding: 25px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border-color); position: relative; z-index: 10; }
+        .auth-tabs { display: flex; gap: 10px; margin-bottom: 15px; }
+        .auth-tab { flex: 1; background: none; border: none; padding: 10px; font-weight: 700; color: var(--text-secondary); cursor: pointer; border-radius: 8px; }
+        .auth-tab.active { color: var(--accent-main); background: var(--accent-soft); }
+        .input-group { margin-bottom: 12px; text-align: right; }
+        .input-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; font-weight: 600; }
+        .input-group input { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-primary); color: var(--text-primary); }
+        .btn-primary { width: 100%; padding: 12px; background: var(--accent-main); color: #FFF; border: none; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; }
+        .btn-guest { width: 100%; padding: 10px; background: transparent; color: var(--text-secondary); border: 1px dashed var(--border-color); border-radius: 8px; margin-top: 8px; cursor: pointer; }
+
+        .app-interface { display: none; max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .api-key-box { background: var(--bg-card); padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid var(--border-color); text-align: right; }
+        .api-key-box input { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; margin-top: 5px; background: var(--bg-surface); color: var(--text-primary); }
+
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .feature-card { background: var(--bg-surface); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border-color); box-shadow: var(--shadow); cursor: pointer; text-align: center; }
+        .feature-card i { font-size: 1.8rem; color: var(--accent-main); margin-bottom: 10px; }
+
+        .workspace { background: var(--bg-surface); border-radius: var(--radius); padding: 25px; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
+        .image-preview { width: 100%; max-width: 350px; height: 200px; border: 2px dashed var(--border-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-direction: column; cursor: pointer; margin: 0 auto 15px; background: var(--bg-card); overflow: hidden; }
+        .image-preview img { width: 100%; height: 100%; object-fit: cover; display: none; }
+
+        .output-card { margin-top: 20px; background: var(--bg-card); padding: 20px; border-radius: 12px; border-right: 4px solid var(--accent-main); text-align: right; display: none; }
+        .audio-controls { margin-top: 15px; display: flex; gap: 10px; }
+        .btn-audio { background: var(--accent-main); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+
+        footer { text-align: center; padding: 20px; color: var(--text-secondary); border-top: 1px solid var(--border-color); margin-top: 50px; }
+        body[dir="ltr"] { font-family: sans-serif; }
+    </style>
+</head>
+<body data-theme="light" dir="rtl">
+
+    <nav class="navbar">
+        <a href="#" class="logo"><i class="fa-solid fa-compass"></i><span id="logo-text">مُـرْشِـدُك</span></a>
+        <div class="nav-controls">
+            <button class="icon-btn" id="lang-toggle" onclick="toggleLanguage()">English</button>
+            <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <video class="hero-video" autoplay loop muted playsinline>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-desert-dunes-under-a-clear-blue-sky-42931-large.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 id="hero-title">مُرشدك السياحي الذكي</h1>
+            <p id="hero-subtitle">استكشف قصص المملكة والتراث المحلي بالتفاعل الصوتي والبصري</p>
+        </div>
+    </section>
+
+    <div class="auth-container" id="auth-section">
+        <div class="auth-tabs">
+            <button class="auth-tab active" id="tab-login" onclick="switchAuth('login')">تسجيل الدخول</button>
+            <button class="auth-tab" id="tab-register" onclick="switchAuth('register')">إنشاء حساب</button>
+        </div>
+        <form onsubmit="event.preventDefault(); startGuestSession();">
+            <div class="input-group">
+                <label id="lbl-email">البريد الإلكتروني</label>
+                <input type="email" required placeholder="name@example.com">
+            </div>
+            <div class="input-group">
+                <label id="lbl-password">كلمة السر</label>
+                <input type="password" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn-primary" id="btn-auth-submit">دخول</button>
+        </form>
+        <button class="btn-guest" id="btn-guest" onclick="startGuestSession()">المتابعة كـ ضيف <i class="fa-solid fa-arrow-left"></i></button>
+    </div>
+
+    <main class="app-interface" id="app-workspace">
+        <div class="api-key-box">
+            <label id="lbl-api-key"><i class="fa-solid fa-key"></i> أدخل Gemini API Key الخاص بك:</label>
+            <input type="password" id="gemini-api-key" placeholder="AIzaSy...">
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card" onclick="selectFeature('visual')">
+                <i class="fa-solid fa-camera-retro"></i>
+                <h3 id="f1-title">التحليل البصري</h3>
+                <p id="f1-desc">تصوير التحف والنقوش (السدو/القط)</p>
+            </div>
+            <div class="feature-card" onclick="selectFeature('gps')">
+                <i class="fa-solid fa-location-crosshairs"></i>
+                <h3 id="f2-title">المرشد الموقعي GPS</h3>
+                <p id="f2-desc">المرشد التلقائي حسب موقعك الحقيقي</p>
+            </div>
+            <div class="feature-card" onclick="selectFeature('routing')">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <h3 id="f3-title">إدارة الازدحام</h3>
+                <p id="f3-desc">جدولة المسارات الهادئة (JSON)</p>
+            </div>
+            <div class="feature-card" onclick="selectFeature('culture')">
+                <i class="fa-solid fa-utensils"></i>
+                <h3 id="f4-title">الوجبات والتراث</h3>
+                <p id="f4-desc">استكشاف المأكولات المحلية لكل منطقة</p>
+            </div>
+        </div>
+
+        <div class="workspace" id="tool-container">
+            <h2 id="tool-title" style="margin-bottom: 15px;"><i class="fa-solid fa-wand-magic-sparkles"></i> اختر ميزة للبدء</h2>
+            <div id="dynamic-tool-area"></div>
+
+            <div class="output-card" id="ai-output">
+                <h4 id="output-title">إجابة المرشد الذكي:</h4>
+                <div id="output-content" style="margin-top:10px;"></div>
+                <div class="audio-controls" id="audio-btn-box" style="display:none;">
+                    <button class="btn-audio" onclick="speakOutput()"><i class="fa-solid fa-volume-high"></i> <span id="btn-speak-text">استمع للحكواتي</span></button>
+                    <button class="btn-audio" style="background:#8C7361;" onclick="stopSpeech()"><i class="fa-solid fa-stop"></i> إيقاف</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p id="footer-text">جميع الحقوق محفوظة © 2026 - تطبيق مُرشدك (Murshedak AI)</p>
+    </footer>
+
+    <script>
+        const translations = {
+            ar: { logo: "مُـرْشِـدُك", heroTitle: "مُرشدك السياحي الذكي", heroSubtitle: "استكشف قصص المملكة والتراث المحلي بالتفاعل الصوتي والبصري", login: "تسجيل الدخول", register: "إنشاء حساب", guest: "المتابعة كـ ضيف", apiKey: "أدخل Gemini API Key الخاص بك:", f1T: "التحليل البصري", f1D: "تصوير التحف والنقوش (السدو/القط)", f2T: "المرشد الموقعي GPS", f2D: "المرشد التلقائي حسب موقعك الحقيقي", f3T: "إدارة الازدحام", f3D: "جدولة المسارات الهادئة (JSON)", f4T: "الوجبات والتراث", f4D: "استكشاف المأكولات المحلية لكل منطقة", speak: "استمع للحكواتي" },
+            en: { logo: "Murshedak", heroTitle: "Smart AI Tour Guide", heroSubtitle: "Explore KSA stories & heritage with audio-visual interaction", login: "Sign In", register: "Register", guest: "Continue as Guest", apiKey: "Enter your Gemini API Key:", f1T: "Visual Recognition", f1D: "Scan artifacts & patterns (Sadu/Qatt)", f2T: "GPS Guide", f2D: "Location-aware guide via your GPS", f3T: "Crowd Control", f3D: "Optimized routes (JSON)", f4T: "Cuisine & Culture", f4D: "Local dishes & regional heritage", speak: "Listen to Storyteller" }
+        };
+
+        let currentLang = 'ar';
+        let base64Image = "";
+        let currentResponseText = "";
+
+        function toggleTheme() {
+            const b = document.body;
+            b.setAttribute('data-theme', b.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            document.body.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('lang-toggle').innerText = currentLang === 'ar' ? 'English' : 'عربي';
+            const t = translations[currentLang];
+            document.getElementById('logo-text').innerText = t.logo;
+            document.getElementById('hero-title').innerText = t.heroTitle;
+            document.getElementById('hero-subtitle').innerText = t.heroSubtitle;
+            document.getElementById('tab-login').innerText = t.login;
+            document.getElementById('tab-register').innerText = t.register;
+            document.getElementById('btn-guest').innerText = t.guest;
+            document.getElementById('lbl-api-key').innerText = t.apiKey;
+            document.getElementById('f1-title').innerText = t.f1T; document.getElementById('f1-desc').innerText = t.f1D;
+            document.getElementById('f2-title').innerText = t.f2T; document.getElementById('f2-desc').innerText = t.f2D;
+            document.getElementById('f3-title').innerText = t.f3T; document.getElementById('f3-desc').innerText = t.f3D;
+            document.getElementById('f4-title').innerText = t.f4T; document.getElementById('f4-desc').innerText = t.f4D;
+            document.getElementById('btn-speak-text').innerText = t.speak;
+        }
+
+        function switchAuth(type) {
+            document.getElementById('tab-login').classList.toggle('active', type === 'login');
+            document.getElementById('tab-register').classList.toggle('active', type === 'register');
+        }
+
+        function startGuestSession() {
+            document.getElementById('auth-section').style.display = 'none';
+            document.getElementById('app-workspace').style.display = 'block';
+        }
+
+        function selectFeature(feature) {
+            const area = document.getElementById('dynamic-tool-area');
+            document.getElementById('ai-output').style.display = 'none';
+
+            if (feature === 'visual') {
+                area.innerHTML = `
+                    <div class="image-preview" onclick="document.getElementById('img-file').click()">
+                        <i class="fa-solid fa-cloud-arrow-up" style="font-size:2rem; color:var(--accent-main)"></i>
+                        <span>ارفع صورة قطعة أثرية أو نقش تراثي</span>
+                        <img id="preview-img">
+                    </div>
+                    <input type="file" id="img-file" accept="image/*" style="display:none;" onchange="handleImg(event)">
+                    <button class="btn-primary" onclick="analyzeVisual()">تحليل الصورة عبر Gemini Vision</button>
+                `;
+            } else if (feature === 'gps') {
+                area.innerHTML = `
+                    <p style="margin-bottom:10px;">اضغط الزر لسحب موقعك الحالي وتلقي شرح حكواتي مخصص للمنطقة:</p>
+                    <button class="btn-primary" onclick="getGPSStory()"><i class="fa-solid fa-location-arrow"></i> تحديد موقعي وسرد القصة</button>
+                `;
+            } else if (feature === 'routing') {
+                area.innerHTML = `
+                    <input type="text" id="city-in" placeholder="اسم الوجهة (مثال: العلا، الدرعية)" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color); margin-bottom:10px;">
+                    <button class="btn-primary" onclick="getRouteJSON()">إنشاء مسار وتجنب الازدحام (JSON)</button>
+                `;
+            } else if (feature === 'culture') {
+                area.innerHTML = `
+                    <input type="text" id="reg-in" placeholder="المنطقة (مثال: عسير، الأحساء، نجد)" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color); margin-bottom:10px;">
+                    <button class="btn-primary" onclick="getCultureInfo()">عرض الأطباق الهامّة والتراث</button>
+                `;
+            }
+        }
+
+        function handleImg(e) {
+            const file = e.target.files[0];
+            if(file){
+                const r = new FileReader();
+                r.onload = function(evt){
+                    document.getElementById('preview-img').src = evt.target.result;
+                    document.getElementById('preview-img').style.display = 'block';
+                    base64Image = evt.target.result.split(',')[1];
+                };
+                r.readAsDataURL(file);
+            }
+        }
+
+        async function analyzeVisual() {
+            const key = document.getElementById('gemini-api-key').value;
+            if(!key || !base64Image) return alert("يرجى إدخال الـ API Key ورفع صورة أولاً.");
+            showLoading();
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`;
+            const payload = { contents: [{ parts: [{ text: "اشرح هذه الصورة التراثية/السياحية في السعودية باختصار وبأسلوب حكواتي ممتع." }, { inline_data: { mime_type: "image/jpeg", data: base64Image } }] }] };
+            callGemini(url, payload);
+        }
+
+        function getGPSStory() {
+            const key = document.getElementById('gemini-api-key').value;
+            if(!key) return alert("يرجى إدخال الـ API Key أولاً.");
+            if (navigator.geolocation) {
+                showLoading("جاري تحديد موقعك الجغرافي عبر GPS...");
+                navigator.geolocation.getCurrentPosition(pos => {
+                    const lat = pos.coords.latitude;
+                    const lng = pos.coords.longitude;
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`;
+                    const payload = { contents: [{ parts: [{ text: `أنا سائح حالياً عند الإحداثيات الجغرافية (${lat}, ${lng}) في السعودية. اذكر اسم المنطقة أو المعالم القريبة واقرد لي قصتها بأسلوب حكواتي سياحي ممتع.` }] }] };
+                    callGemini(url, payload);
+                }, () => alert("تعذر الحصول على الموقع الجغرافي."));
+            }
+        }
+
+        async function getRouteJSON() {
+            const key = document.getElementById('gemini-api-key').value;
+            const city = document.getElementById('city-in').value || "العلا";
+            if(!key) return alert("يرجى إدخال الـ API Key أولاً.");
+            showLoading();
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`;
+            const payload = {
+                contents: [{ parts: [{ text: `اقترح مسار هادئ لـ (${city}). أرجع JSON بحقول: destination, best_time, crowd_level, alternative_spots.` }] }],
+                generationConfig: { response_mime_type: "application/json" }
+            };
+            try {
+                const res = await fetch(url, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+                const d = await res.json();
+                const obj = JSON.parse(d.candidates[0].content.parts[0].text);
+                const html = `<p><b>الوجهة:</b> ${obj.destination}</p><p><b>أفضل وقت:</b> ${obj.best_time}</p><p><b>مستوى الازدحام:</b> ${obj.crowd_level}</p><p><b>أماكن بديلة:</b> ${obj.alternative_spots ? obj.alternative_spots.join(', ') : ''}</p>`;
+                showOutput(html);
+            } catch(e) { showOutput("خطأ في معالجة البيانات المنظمة."); }
+        }
+
+        async function getCultureInfo() {
+            const key = document.getElementById('gemini-api-key').value;
+            const reg = document.getElementById('reg-in').value || "عسير";
+            if(!key) return alert("يرجى إدخال الـ API Key أولاً.");
+            showLoading();
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`;
+            const payload = { contents: [{ parts: [{ text: `ما هي أهم 3 أطباق شعبية وتراثية في منطقة (${reg}) بالسعودية مع شرح مختصر؟` }] }] };
+            callGemini(url, payload);
+        }
+
+        async function callGemini(url, payload) {
+            try {
+                const res = await fetch(url, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+                const d = await res.json();
+                const txt = d.candidates[0].content.parts[0].text;
+                showOutput(txt);
+            } catch(e) { showOutput("تعذر التواصل مع الذكاء الاصطناعي. تأكد من صحة الـ API Key."); }
+        }
+
+        function showLoading(msg = "جاري الاتصال بالمرشد الذكي...") {
+            document.getElementById('ai-output').style.display = 'block';
+            document.getElementById('output-content').innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${msg}`;
+            document.getElementById('audio-btn-box').style.display = 'none';
+        }
+
+        function showOutput(text) {
+            currentResponseText = text.replace(/<[^>]*>/g, '');
+            document.getElementById('ai-output').style.display = 'block';
+            document.getElementById('output-content').innerHTML = text.replace(/\n/g, '<br>');
+            document.getElementById('audio-btn-box').style.display = 'flex';
+        }
+
+        // Text-To-Speech (الحكواتي الصوتي)
+        function speakOutput() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utter = new SpeechSynthesisUtterance(currentResponseText);
+                utter.lang = currentLang === 'ar' ? 'ar-SA' : 'en-US';
+                window.speechSynthesis.speak(utter);
+            } else { alert("المتصفح لا يدعم قارئ الصوت."); }
+        }
+
+        function stopSpeech() {
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        }
+    </script>
+</body>
+</html>
